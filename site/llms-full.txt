@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is the interactive companion site for the ICLR 2027 manuscript
+This is the interactive companion site for the open-science manuscript
 "Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in
 Learned Context-Pruning Ensembles."
 

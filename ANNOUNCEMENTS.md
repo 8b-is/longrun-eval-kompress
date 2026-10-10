@@ -7,7 +7,7 @@
 ## X / Twitter (thread)
 
 **Tweet 1:**
-We just open-sourced an ICLR 2027 manuscript: "Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles."
+We just open-sourced an open-science manuscript: "Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles."
 
 17 models. 8 teachers. 4 architectures. $38.95 total cost.
 
@@ -99,7 +99,7 @@ We closed the loop. 17 models, 8 teachers, 4 architectures, $38.95 total. The ma
 
 ## What we built
 
-- An ICLR 2027 manuscript proving the Voting Ensemble Paradox
+- An open-science manuscript proving the Voting Ensemble Paradox
 - kompress-v8: a production compression model (0.993 exact_keep_pct)
 - A loop-experiment-researcher template so anyone can scaffold from here
 - Interactive HTML sites, a marimo notebook, an MCP server
@@ -150,7 +150,7 @@ Built with the Loop Engineering paradigm (Addy Osmani, Cobus Greyling, LangChain
 ## Bluesky
 
 **Post 1 (main announcement):**
-just open-sourced an ICLR 2027 manuscript: "Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles"
+just open-sourced an open-science manuscript: "Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles"
 
 17 models. 8 teachers. 4 architectures. $38.95 total cost.
 
@@ -186,7 +186,7 @@ python template/scaffold.py --name "my-idea" gives you a full research scaffold.
 the site has three layers:
 - ENTHEA landing (kompress.vaked.dev) -- full psychedelic neural field visualizer
 - interactive paper (kompress.vaked.dev/notebook/) -- paradox simulator + baselines
-- paper PDF (kompress.vaked.dev/paper/main.pdf) -- the ICLR 2027 manuscript
+- paper PDF (kompress.vaked.dev/paper/main.pdf) -- the open-science manuscript
 
 9 CI agents run on every push: citation guard, metric watchdog, changelog gen, HF card sync, LaTeX guard, doc sync, link checker, todo scanner, secret scanner.
 

@@ -92,7 +92,7 @@ assignees: []
   - Upload the PDF and source files (.tex + .bib)
   - Title: "Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles"
   - Abstract: copy from main.tex
-  - Comments: "Submitted to ICLR 2027."
+  - Comments: "Preprint. Target venue: ICLR 2027."
 - [ ] **3.4** Once arXiv assigns an identifier, add it to:
   - `CITATION.cff` (preferred-citation)
   - `README.md` (badges section)

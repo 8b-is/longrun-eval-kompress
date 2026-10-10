@@ -103,4 +103,4 @@ We're applying for an **HF GPU Community Grant** to run the Eval Space on a T4 �
 
 *"The agent forgets. The repo does not." — Addy Osmani*
 
-*ICLR 2027 submission. All models, data, and code open source.*
+*Open-science preprint — target venue ICLR 2027, not yet submitted. All models, data, and code open source.*

@@ -108,7 +108,7 @@ The included GitHub Actions workflow checks:
 
 ## Based on
 
-This template was extracted from [longrun-eval-kompress](https://github.com/peterlodri-sec/longrun-eval-kompress), an ICLR 2027 manuscript produced by the Loop Engineering paradigm for $38.95 total. The project that produced it followed exactly this workflow: genesis contract → skill file → loop iterations → manuscript → baselines → notebook → MCP server → HTML sites.
+This template was extracted from [longrun-eval-kompress](https://github.com/peterlodri-sec/longrun-eval-kompress), an open-science manuscript (target venue ICLR 2027) produced by the Loop Engineering paradigm for $38.95 total. The project that produced it followed exactly this workflow: genesis contract → skill file → loop iterations → manuscript → baselines → notebook → MCP server → HTML sites.
 
 ## License
 

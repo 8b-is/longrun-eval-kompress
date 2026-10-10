@@ -1,6 +1,6 @@
 # kompress Research Wiki
 
-Welcome to the wiki for the **longrun-eval-kompress** project — the ICLR 2027 manuscript on the Voting Ensemble Paradox and the 3.0× asymmetric loss modulation fix.
+Welcome to the wiki for the **longrun-eval-kompress** project — the open-science manuscript (target venue ICLR 2027, not yet submitted) on the Voting Ensemble Paradox and the 3.0× asymmetric loss modulation fix.
 
 ## Pages
 

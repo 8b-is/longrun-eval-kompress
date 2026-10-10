@@ -2,9 +2,10 @@
 
 ## Project Overview
 
-This repository contains the ICLR 2027 manuscript for "Asymmetric Loss Modulation
+This repository contains the open-science manuscript "Asymmetric Loss Modulation
 Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles" —
-a formal academic LaTeX paper about the Voting Ensemble Paradox in multi-checkpoint
+written toward ICLR 2027 as the target venue, not yet submitted — a formal
+academic LaTeX paper about the Voting Ensemble Paradox in multi-checkpoint
 compression ensembles, the 3.0× asymmetric loss modulation fix, and the kompress-v8
 production model trained via C3 self-distillation.
 

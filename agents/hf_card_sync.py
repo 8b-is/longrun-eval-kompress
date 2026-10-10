@@ -70,8 +70,8 @@ tokenizer = AutoTokenizer.from_pretrained("{model_id}")
 @article{{kompress2027,
   title={{Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles}},
   author={{Lodri, Peter}},
-  journal={{ICLR 2027}},
-  year={{2027}}
+  year={{2027}},
+  note={{Open-science preprint; not yet submitted. Target venue: ICLR 2027}}
 }}
 ```
 """

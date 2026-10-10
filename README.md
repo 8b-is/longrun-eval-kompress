@@ -4,7 +4,7 @@
 
 > "ah and just one more this you know then I think we can close this loop [deepseek] xd"
 
-> **ICLR 2027 manuscript** — Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles.
+> **Open-science manuscript** — target venue ICLR 2027, not yet submitted — Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles.
 >
 > Open-source LaTeX paper + baseline scripts + marimo notebook + MCP server. Total research cost: **$38.95** ($37.19 DeepSeek + $1.76 GPU).
 
@@ -50,7 +50,7 @@ that turns the paper into an interactive experience. The site has three layers:
 
 - **[ENTHEA landing](https://kompress.vaked.dev)** — full psychedelic neural-field visualizer
 - **[Interactive paper](https://kompress.vaked.dev/notebook/)** — paradox simulator, mechanism toggle, baselines
-- **[Paper PDF](https://kompress.vaked.dev/paper/main.pdf)** — the ICLR 2027 manuscript
+- **[Paper PDF](https://kompress.vaked.dev/paper/main.pdf)** — the manuscript, open science
 
 - **Paradox simulator** — adjust k (voting threshold) and N (voters) to watch
   the ensemble collapse in real time

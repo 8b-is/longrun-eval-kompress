@@ -11,7 +11,7 @@ program. Each post documents a specific finding, technique, or
 milestone in the development of kompress-v8 — a 149M-parameter
 dual-head ModernBERT for learned context pruning.
 
-The research produced the ICLR 2027 manuscript "Asymmetric Loss
+The research produced the open-science manuscript "Asymmetric Loss
 Modulation Resolves the Voting Ensemble Paradox in Learned
 Context-Pruning Ensembles."
 

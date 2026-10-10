@@ -3,7 +3,7 @@
 
 # longrun-eval-kompress
 
-> ICLR 2027 manuscript: Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles. Open-source LaTeX paper, baseline scripts, marimo notebook, and MCP server.
+> Open-science manuscript (target venue ICLR 2027, not yet submitted): Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles. Open-source LaTeX paper, baseline scripts, marimo notebook, and MCP server.
 
 ## What this repo contains
 
