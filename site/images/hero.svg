@@ -44,7 +44,7 @@
   <text x="600" y="470" text-anchor="middle" font-family="monospace" font-size="18" fill="#9a93b8" letter-spacing="4">17 MODELS · $38.95 · ONE PARADOX</text>
   
   <!-- Bottom bar -->
-  <text x="600" y="520" text-anchor="middle" font-family="monospace" font-size="12" fill="#62e6c9" opacity="0.6">ICLR 2027 · OPEN SCIENCE · HUGGINGFACE</text>
+  <text x="600" y="520" text-anchor="middle" font-family="monospace" font-size="12" fill="#62e6c9" opacity="0.6">OPEN SCIENCE · HUGGINGFACE</text>
   
   <!-- Dots decoration -->
   <circle cx="300" cy="150" r="2" fill="#b48bff" opacity="0.4"/>

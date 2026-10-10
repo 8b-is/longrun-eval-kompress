@@ -1,60 +1,206 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>kompress · paper</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>kompress ∞ — the voting ensemble paradox, resolved</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#03050c">
+
+<meta name="description" content="Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles. An open-science manuscript.">
 <style>
-  :root { --bg:#05060a;--ink:#e7e2f7;--dim:#9a93b8;--line:rgba(170,150,255,.18);--accent:#b48bff;--accent2:#62e6c9;
-    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif; }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);padding:40px 20px;min-height:100vh}
-  .paper{max-width:720px;margin:0 auto;background:linear-gradient(150deg,rgba(18,15,32,.96),rgba(9,8,18,.96));border:1px solid var(--line);border-radius:18px;padding:48px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
-  h1{font-family:var(--mono);font-size:24px;letter-spacing:.08em;background:linear-gradient(92deg,var(--accent),#7bdcff,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:4px}
-  .authors{font-family:var(--mono);font-size:12px;color:var(--dim);margin-bottom:8px}
-  .venue{font-family:var(--mono);font-size:11px;color:var(--accent2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:24px}
-  h2{font-family:var(--mono);font-size:14px;color:var(--accent2);margin:24px 0 8px;letter-spacing:.06em}
-  p{font-size:14px;line-height:1.7;color:var(--ink);margin-bottom:12px}
-  .math{font-family:var(--mono);font-size:12px;background:rgba(180,139,255,.08);border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin:12px 0;color:var(--accent2);overflow-x:auto}
-  table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px;margin:12px 0}
-  th,td{padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
-  th{color:var(--accent2);font-weight:500}
-  a{color:var(--accent2);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .back{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:24px;display:inline-block}
+  :root{
+    color-scheme: dark;
+    --ink:#f2f0ff; --dim:#a9a3c4; --line:rgba(255,255,255,.10);
+    --glass:rgba(10,12,24,.52);
+    --accent:#7de3ff; --accent2:#ff7ab8; --accent3:#b48bff;
+    --serif:'Palatino Linotype',Palatino,'TeX Gyre Pagella',Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:#03050c;color:var(--ink);
+    font:16px/1.78 ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+  #field{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+  #veil{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(3,5,12,.55) 0%,rgba(3,5,12,.80) 40%,rgba(3,5,12,.94) 100%),
+      radial-gradient(1100px 620px at 50% -8%,rgba(180,139,255,.16),transparent 62%)}
+  main{position:relative;z-index:2;max-width:860px;margin:0 auto;padding:clamp(20px,5vw,64px)}
+  .top{display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap;font-size:11.5px;
+    letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-bottom:clamp(30px,9vh,90px)}
+  .top a{color:var(--dim);text-decoration:none} .top a:hover{color:var(--accent)}
+  h1{font-family:var(--serif);font-size:clamp(28px,5.4vw,46px);line-height:1.08;letter-spacing:-.02em;
+    margin:0 0 .5rem;text-wrap:balance;
+    background:linear-gradient(92deg,#fff,#cfe9ff 40%,#ffd4ec 70%,#d9c6ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 40px rgba(125,227,255,.18))}
+  .byline{color:var(--dim);font-size:13.5px;margin:0 0 2rem}
+  .byline b{color:#fff}
+  h2{font-size:12px;letter-spacing:.30em;text-transform:uppercase;color:var(--accent3);
+    margin:2.6rem 0 .9rem;font-weight:600}
+  p{margin:.85rem 0;color:#e6e3f7;text-wrap:pretty}
+  a{color:var(--accent);text-underline-offset:2px}
+  .abstract{font-family:var(--serif);font-size:clamp(16px,2vw,19px);line-height:1.62;color:#eeeaff}
+  .math{
+    font-family:var(--serif);font-size:1.02rem;line-height:1.7;color:#eae7ff;
+    border-left:3px solid var(--accent3);background:var(--glass);
+    backdrop-filter:blur(12px);padding:1.1rem 1.3rem;border-radius:0 14px 14px 0;margin:1.1rem 0;
+  }
+  table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:13.5px;
+    border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{border-bottom:1px solid var(--line);padding:.62em .8em;text-align:left}
+  th{background:rgba(255,255,255,.05);color:#fff;font-weight:600}
+  tbody tr:last-child td{border-bottom:0}
+  tr.prod td{background:rgba(125,227,255,.07);color:#fff}
+  .links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+  .pill{display:inline-flex;align-items:center;gap:.5em;padding:.6em 1.05em;border-radius:999px;
+    border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(14px);
+    color:#eef3ff;text-decoration:none;font-size:13px;
+    transition:transform .18s cubic-bezier(.2,.8,.2,1),border-color .18s,box-shadow .28s}
+  .pill:hover{transform:translateY(-2px);border-color:rgba(125,227,255,.45);
+    box-shadow:0 10px 40px -12px rgba(125,227,255,.55)}
+  .pill .k{color:var(--accent2)}
+  footer{margin-top:clamp(50px,11vh,120px);padding-top:1.3rem;border-top:1px solid var(--line);
+    font-size:12px;color:var(--dim);line-height:2.1}
+  footer a{color:var(--accent3);text-decoration:none} footer a:hover{color:var(--accent)}
+  @media (prefers-reduced-motion: reduce){ }
 </style>
 </head>
 <body>
-<div class="paper">
+<canvas id="field" aria-hidden="true"></canvas>
+<div id="veil" aria-hidden="true"></div>
+<main>
+  <div class="top">
+    <a href="/">🜂 kompress.vaked.dev</a>
+    <span>the manuscript · open science</span>
+  </div>
+
   <h1>Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles</h1>
-  <div class="authors">Peter Lodri</div>
-  <div class="venue">ICLR 2027 Submission · Open Science</div>
+  <p class="byline"><b>Peter Lodri</b> · open science · 2026</p>
 
   <h2>Abstract</h2>
-  <p>Multi-checkpoint voting ensembles of learned context-pruning models paradoxically <em>underperform</em> their best single-voter constituent. We formalize this: under <em>k</em>-of-<em>N</em> drop voting, the ensemble eviction indicator equals the <em>k</em>-th order statistic of the per-voter indicators — the ensemble collapses to its weakest member on every stratum. Three mechanisms resolve the paradox: asymmetric loss modulation during training (λ=3.0), regex-based inference overrides, and C3 self-distillation with a stronger teacher. We train 17 kompress models (149M-param ModernBERT) for $38.95 total, achieving a Pareto-optimal 0.955 heretic-exact at 15% compression with kompress-v8.</p>
+  <p class="abstract">
+    Multi-checkpoint voting ensembles of learned context-pruning models paradoxically
+    <em>underperform</em> their best single-voter constituent. We formalize this: under
+    <em>k</em>-of-<em>N</em> drop voting, the ensemble eviction indicator equals the
+    <em>k</em>-th order statistic of the per-voter indicators — the ensemble collapses to
+    its weakest member on every stratum. Three mechanisms resolve the paradox: asymmetric
+    loss modulation during training (λ = 3.0), regex-based inference overrides, and C3
+    self-distillation with a stronger teacher. We train 17 kompress models (149M-param
+    ModernBERT) for $38.95 total, achieving a Pareto-optimal 0.955 heretic-exact at 15%
+    compression with kompress-v8.
+  </p>
 
-  <h2>Theorem 1 (Voting Ensemble Paradox)</h2>
-  <div class="math">Let E be an ensemble of N voters, each producing a per-token keep indicator I<sub>i</sub> ∈ {0,1}. Under k-of-N drop voting, I<sub>E</sub> = 1 iff Σ I<sub>i</sub> ≥ k. Then I<sub>E</sub> = I<sub>(N-k+1)</sub> — the (N−k+1)-th order statistic — and the ensemble's precision ≤ min<sub>i</sub> precision(I<sub>i</sub>).</div>
+  <h2>Theorem 1 — the voting ensemble paradox</h2>
+  <div class="math">
+    Let <em>E</em> be an ensemble of <em>N</em> voters, each producing a per-token keep
+    indicator I<sub>i</sub> ∈ {0,1}. Under k-of-N drop voting, I<sub>E</sub> = 1 iff
+    Σ I<sub>i</sub> ≥ k. Then I<sub>E</sub> = I<sub>(N−k+1)</sub> — the (N−k+1)-th order
+    statistic — and the ensemble's precision ≤ min<sub>i</sub> precision(I<sub>i</sub>).
+  </div>
 
   <h2>Results</h2>
   <table>
-    <tr><th>Version</th><th>Heretic</th><th>Keep</th><th>Note</th></tr>
-    <tr><td>v2-base</td><td>0.975</td><td>0.897</td><td>precision ceiling</td></tr>
-    <tr style="color:var(--accent2)"><td><b>v8 ★</b></td><td><b>0.955</b></td><td><b>0.854</b></td><td><b>production</b></td></tr>
-    <tr><td>v16</td><td>0.972</td><td>0.972</td><td>endpoint (10x)</td></tr>
-    <tr><td>v17</td><td>0.963</td><td>0.963</td><td>tradeoff (5x)</td></tr>
+    <thead><tr><th>Version</th><th>Heretic</th><th>Keep</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>v2-base</td><td>0.975</td><td>0.897</td><td>precision ceiling</td></tr>
+      <tr class="prod"><td><b>v8 ★</b></td><td><b>0.955</b></td><td><b>0.854</b></td><td><b>production</b></td></tr>
+      <tr><td>v16</td><td>0.972</td><td>0.972</td><td>endpoint (10×)</td></tr>
+      <tr><td>v17</td><td>0.963</td><td>0.963</td><td>tradeoff (5×)</td></tr>
+    </tbody>
   </table>
 
   <h2>Links</h2>
-  <p>
-    <a href="https://github.com/peterlodri-sec/longrun-eval-kompress">GitHub</a> ·
-    <a href="https://huggingface.co/PeetPedro">Models (18)</a> ·
-    <a href="https://github.com/peterlodri-sec/loopkit">LoopKit</a> ·
-    <a href="https://huggingface.co/spaces/PeetPedro/headroom-eval">Eval Space</a> ·
-    <a href="https://pocoo.vaked.dev">Blog</a>
-  </p>
+  <nav class="links">
+    <a class="pill" href="https://github.com/peterlodri-sec/longrun-eval-kompress"><span class="k">⌘</span> GitHub</a>
+    <a class="pill" href="/paper/main.pdf"><span class="k">⤓</span> PDF</a>
+    <a class="pill" href="https://github.com/peterlodri-sec/kompress-ultra/blob/main/paper/main_v2.pdf"><span class="k">⤓</span> KOMPRESS v2 paper (PDF)</a>
+    <a class="pill" href="https://huggingface.co/PeetPedro"><span class="k">◈</span> Models</a>
+    <a class="pill" href="https://github.com/peterlodri-sec/loopkit"><span class="k">↻</span> LoopKit</a>
+    <a class="pill" href="https://huggingface.co/spaces/PeetPedro/headroom-eval"><span class="k">◎</span> Eval space</a>
+    <a class="pill" href="https://pocoo.vaked.dev"><span class="k">✎</span> Blog</a>
+  </nav>
 
-  <a href="/" class="back">← back to kompress.vaked.dev</a>
-</div>
+  <footer>
+    <div><a href="/">← back to kompress.vaked.dev</a></div>
+    <div>open science · {−1, 0, +1} · om mani padme hum</div>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const canvas = document.getElementById('field');
+  const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, powerPreference: 'low-power' });
+  if (!gl) { canvas.style.display = 'none'; return; }
+  const VERT = `#version 300 es
+  precision highp float;
+  const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
+  void main(){ gl_Position = vec4(P[gl_VertexID], 0.0, 1.0); }`;
+  const FRAG = `#version 300 es
+  precision highp float;
+  out vec4 fragColor;
+  uniform vec2 u_res; uniform float u_time; uniform vec2 u_mouse;
+  float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453123); }
+  float noise(vec2 p){ vec2 i=floor(p),f=fract(p); vec2 u=f*f*(3.0-2.0*f);
+    return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y); }
+  float fbm(vec2 p){ float a=0.5,s=0.0; for(int i=0;i<5;i++){ s+=a*noise(p); p=p*2.03+11.7; a*=0.5; } return s; }
+  void main(){
+    vec2 res=u_res; vec2 p=(gl_FragCoord.xy*2.0-res)/min(res.x,res.y);
+    float t=u_time*0.045;
+    vec2 m=(u_mouse*2.0-res)/min(res.x,res.y); vec2 d=p-m;
+    float mf=exp(-dot(d,d)*1.5); p+=mf*0.22*normalize(d+1e-5)*sin(t*2.6+dot(p,p)*2.0);
+    vec2 q=vec2(fbm(p*1.1+vec2(0.0,t)), fbm(p*1.1+vec2(5.2,-t)));
+    vec2 r=vec2(fbm(p*1.8+3.2*q+vec2(1.7,9.2)+t*0.5), fbm(p*1.8+3.2*q+vec2(8.3,2.8)-t*0.4));
+    float f=fbm(p*1.4+3.0*r);
+    float rib=pow(0.5+0.5*sin(6.2831*(r.x+r.y)+t*1.8+mf*3.0),3.0);
+    vec3 c=vec3(0.05,0.08,0.22);
+    c=mix(c,vec3(0.596,0.286,0.902),smoothstep(0.20,0.95,f));
+    c=mix(c,vec3(0.086,0.780,1.000),smoothstep(0.45,1.00,length(r)*0.82));
+    c=mix(c,vec3(1.000,0.373,0.694),smoothstep(0.55,1.00,q.y)*0.7);
+    c+=vec3(0.086,0.780,1.000)*rib*0.26*(0.35+f);
+    c+=vec3(0.596,0.286,0.902)*exp(-length(p-vec2(0.0,1.15))*1.15)*0.28;
+    c+=vec3(0.086,0.780,1.000)*mf*0.12;
+    c*=0.32+0.68*smoothstep(2.35,0.30,length(p*vec2(1.0,0.82)));
+    c=c/(c+0.88); c=pow(c,vec3(0.94));
+    c+=(hash(gl_FragCoord.xy+fract(u_time)*91.7)-0.5)*0.02;
+    fragColor=vec4(c,1.0);
+  }`;
+  function sh(t,s){ const o=gl.createShader(t); gl.shaderSource(o,s); gl.compileShader(o);
+    if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; }
+  try{
+    const prog=gl.createProgram();
+    gl.attachShader(prog,sh(gl.VERTEX_SHADER,VERT));
+    gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FRAG));
+    gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
+    gl.bindVertexArray(gl.createVertexArray());
+    const Ur=gl.getUniformLocation(prog,'u_res'), Ut=gl.getUniformLocation(prog,'u_time'),
+          Um=gl.getUniformLocation(prog,'u_mouse');
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const S=()=>Math.min(devicePixelRatio||1,2);
+    let tg={x:innerWidth*.5,y:innerHeight*.4}, sm={...tg};
+    function rs(){ const s=S(), w=Math.floor(innerWidth*s), h=Math.floor(innerHeight*s);
+      if(canvas.width!==w||canvas.height!==h){ canvas.width=w; canvas.height=h; gl.viewport(0,0,w,h); } }
+    addEventListener('resize',rs,{passive:true});
+    addEventListener('pointermove',e=>{ const s=S(); tg.x=e.clientX*s; tg.y=(innerHeight-e.clientY)*s; },{passive:true});
+    const t0=performance.now();
+    (function frame(now){
+      rs();
+      sm.x+=(tg.x-sm.x)*0.05; sm.y+=(tg.y-sm.y)*0.05;
+      gl.uniform2f(Ur,canvas.width,canvas.height);
+      gl.uniform1f(Ut, reduce?12.0:(now-t0)/1000);
+      gl.uniform2f(Um,sm.x,sm.y);
+      gl.drawArrays(gl.TRIANGLES,0,3);
+      requestAnimationFrame(frame);
+    })(t0);
+  }catch(e){ canvas.style.display='none'; }
+})();
+</script>
 </body>
 </html>

@@ -1,46 +1,376 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>kompress ∞</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>kompress ∞ — learnable context compression, in the open</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#03050c">
+
+<meta name="description" content="kompress — learnable context compression. Asymmetric loss modulation resolves the voting ensemble paradox in learned context-pruning ensembles. Open science, open models, open code.">
 <style>
-  :root { --bg:#05060a; --ink:#e7e2f7; --dim:#9a93b8; --accent:#b48bff; --accent2:#62e6c9; --mono:"SF Mono",ui-monospace,monospace; --sans:-apple-system,BlinkMacSystemFont,sans-serif; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--ink); font-family:var(--sans); min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 20px; }
-  h1 { font-family:var(--mono); font-size:clamp(2em,8vw,5em); letter-spacing:.1em; background:linear-gradient(92deg,var(--accent),var(--accent2),#ff9ad5,var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent; background-size:300% 100%; animation:hue 12s linear infinite; margin-bottom:8px; }
-  @keyframes hue { to { background-position:300% 0; } }
-  p { font-size:1.1em; color:var(--dim); max-width:500px; line-height:1.6; margin:0 auto 24px; }
-  .links { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
-  .links a { color:var(--accent2); text-decoration:none; font-family:var(--mono); font-size:0.9em; padding:8px 16px; border:1px solid rgba(98,230,201,.2); border-radius:8px; transition:.2s; }
-  .links a:hover { border-color:var(--accent2); background:rgba(98,230,201,.06); }
-  .meta { margin-top:40px; font-size:0.8em; color:var(--dim); font-family:var(--mono); }
-  .meta a { color:var(--accent2); }
-  .notice { margin-top:24px; font-size:0.75em; color:var(--dim); font-family:var(--mono); opacity:.6; }
-  .notice a { color:var(--accent2); }
+  :root{
+    color-scheme: dark;
+    --ink:#f2f0ff;
+    --dim:#a9a3c4;
+    --line:rgba(255,255,255,.10);
+    --glass:rgba(10,12,24,.42);
+    --accent:#7de3ff;
+    --accent2:#ff7ab8;
+    --accent3:#b48bff;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:#03050c;
+    color:var(--ink);
+    font:16px/1.7 ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  /* ── the field ─────────────────────────────────────────────────────── */
+  #field{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0;background:#03050c}
+  #veil{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(180,139,255,.16), transparent 62%),
+      radial-gradient(900px 600px at 90% 110%, rgba(125,227,255,.10), transparent 60%),
+      radial-gradient(800px 500px at 5% 100%, rgba(255,122,184,.10), transparent 60%),
+      linear-gradient(180deg, rgba(3,5,12,.10) 0%, rgba(3,5,12,.62) 62%, rgba(3,5,12,.92) 100%);
+  }
+  #grain{
+    position:fixed;inset:-50%;z-index:2;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.55'/></svg>");
+    animation:drift 9s steps(6) infinite;
+  }
+  @keyframes drift{
+    0%{transform:translate3d(0,0,0)} 25%{transform:translate3d(-2%,1%,0)}
+    50%{transform:translate3d(1%,-2%,0)} 75%{transform:translate3d(-1%,-1%,0)}
+    100%{transform:translate3d(0,0,0)}
+  }
+
+  /* ── layout ────────────────────────────────────────────────────────── */
+  main{position:relative;z-index:3;max-width:1080px;margin:0 auto;padding:clamp(20px,5vw,64px)}
+  .top{
+    display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap;
+    font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);
+    padding-bottom:clamp(28px,10vh,110px);
+  }
+  .top a{color:var(--dim);text-decoration:none}
+  .top a:hover{color:var(--accent)}
+
+  .hero{min-height:clamp(52vh,62vh,72vh);display:flex;flex-direction:column;justify-content:center;gap:1.4rem}
+  h1{
+    font-family:'Palatino Linotype',Palatino,'TeX Gyre Pagella',Georgia,serif;
+    font-size:clamp(56px,15vw,168px);line-height:.92;letter-spacing:-.03em;margin:0;
+    font-weight:600;
+    background:linear-gradient(92deg,#fff 0%,#cfe9ff 34%,#ffd4ec 62%,#d9c6ff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 44px rgba(125,227,255,.20)) drop-shadow(0 0 90px rgba(180,139,255,.16));
+    text-wrap:balance;
+  }
+  .thesis{max-width:62ch;font-size:clamp(15px,1.7vw,19px);color:#e8e5ff;text-wrap:pretty}
+  .thesis b{color:#fff;font-weight:600}
+  .meta{font-size:12.5px;color:var(--dim);letter-spacing:.06em}
+  .meta a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(125,227,255,.28)}
+  .meta a:hover{border-bottom-color:var(--accent)}
+
+  .pills{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.4rem}
+  .pill{
+    display:inline-flex;align-items:center;gap:.5em;
+    padding:.62em 1.05em;border-radius:999px;
+    border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(14px) saturate(140%);
+    color:#eef3ff;text-decoration:none;font-size:13px;letter-spacing:.02em;
+    transition:transform .18s cubic-bezier(.2,.8,.2,1), border-color .18s, box-shadow .28s, background .18s;
+  }
+  .pill:hover{
+    transform:translateY(-2px);
+    border-color:rgba(125,227,255,.45);
+    box-shadow:0 10px 40px -12px rgba(125,227,255,.55), inset 0 0 0 1px rgba(255,255,255,.04);
+    background:rgba(16,20,38,.62);
+  }
+  .pill .k{color:var(--accent2)}
+  .pill.alt:hover{border-color:rgba(255,122,184,.45);box-shadow:0 10px 40px -12px rgba(255,122,184,.55)}
+
+  section{margin-top:clamp(56px,12vh,140px)}
+  h2{
+    font-size:12px;letter-spacing:.30em;text-transform:uppercase;color:var(--accent3);
+    margin:0 0 1.1rem;font-weight:600;
+  }
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+  a.card{
+    display:block;padding:1.1rem 1.2rem;border:1px solid var(--line);border-radius:16px;
+    background:var(--glass);backdrop-filter:blur(12px) saturate(130%);
+    color:inherit;text-decoration:none;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s,box-shadow .3s;
+  }
+  a.card:hover{transform:translateY(-3px);border-color:rgba(180,139,255,.45);box-shadow:0 18px 60px -22px rgba(180,139,255,.6)}
+  a.card .t{display:block;color:#fff;font-weight:600;margin-bottom:.25rem}
+  a.card .d{display:block;color:var(--dim);font-size:13px}
+
+  .stats{display:flex;flex-wrap:wrap;gap:1.6rem;font-size:13px;color:var(--dim)}
+  .stats b{
+    display:block;font-family:'Palatino Linotype',Palatino,Georgia,serif;
+    font-size:clamp(26px,4vw,40px);color:#fff;font-weight:600;line-height:1.1;
+  }
+
+  /* scroll reveal — progressive enhancement: hidden only when JS is running */
+  .js .rev{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+  .rev.in{opacity:1;transform:none}
+
+  footer{
+    margin-top:clamp(56px,12vh,140px);padding-top:1.3rem;border-top:1px solid var(--line);
+    font-size:12px;color:var(--dim);line-height:2.1;
+  }
+  footer a{color:var(--accent3);text-decoration:none}
+  footer a:hover{color:var(--accent)}
+
+  @media (prefers-reduced-motion: reduce){
+    #grain{animation:none}
+    .js .rev{opacity:1;transform:none;transition:none}
+  }
 </style>
+<script>document.documentElement.className += ' js';</script>
 </head>
 <body>
-  <h1>kompress ∞</h1>
-  <p>Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles. ICLR 2027.</p>
-  
-  <div class="links">
-    <a href="/paper.html">paper</a>
-    <a href="https://huggingface.co/PeetPedro">models (20)</a>
-    <a href="https://github.com/peterlodri-sec/longrun-eval-kompress">github</a>
-    <a href="https://github.com/peterlodri-sec/loopkit">loopkit</a>
-    <a href="https://huggingface.co/spaces/PeetPedro/headroom-eval">eval space</a>
-    <a href="/notebook.html">notebook</a>
-  <a href="https://patreon.com/peterlodri" style="color:var(--accent2);text-decoration:none;font-family:var(--mono);font-size:0.9em;padding:8px 16px;border:1px solid rgba(247,118,142,.3);border-radius:8px;transition:.2s;" onmouseover="this.style.background='rgba(247,118,142,.08)'" onmouseout="this.style.background='transparent'">♥ support</a>
-</div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div id="veil" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
 
-  <div class="meta">
-    17 models · 8 teachers · 4 architectures · $38.95 total · <a href="https://pocoo.vaked.dev">blog</a>
+<main>
+  <div class="top">
+    <a href="/">🜂 kompress.vaked.dev</a>
+    <span>learnable context compression · open science</span>
   </div>
-  <div class="notice">
-    <a href="https://pocoo.vaked.dev/posts/2026-06-26-voting-ensemble-paradox">the voting ensemble paradox — resolved</a> · 
-    <a href="https://pocoo.vaked.dev/posts/2026-06-25-the-loop-shipped">the loop shipped</a> · 
-    <a href="https://pocoo.vaked.dev/posts/2026-06-25-loopkit">loopkit</a>
-  </div>
+
+  <header class="hero">
+    <h1>kompress&nbsp;∞</h1>
+    <p class="thesis">
+      <b>Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned
+      Context-Pruning Ensembles.</b> An open-science manuscript: formalised, proven,
+      and fixed — with every model, dataset and line of code in the open.
+    </p>
+    <nav class="pills" aria-label="primary">
+      <a class="pill" href="/paper.html"><span class="k">✦</span> the paper</a>
+      <a class="pill alt" href="https://github.com/peterlodri-sec/kompress-ultra/blob/main/paper/main_v2.pdf"><span class="k">⤓</span> KOMPRESS v2 paper (PDF)</a>
+      <a class="pill" href="https://huggingface.co/PeetPedro"><span class="k">◈</span> 20 models</a>
+      <a class="pill" href="https://github.com/peterlodri-sec/longrun-eval-kompress"><span class="k">⌘</span> github</a>
+      <a class="pill alt" href="https://github.com/peterlodri-sec/loopkit"><span class="k">↻</span> loopkit</a>
+      <a class="pill" href="https://huggingface.co/spaces/PeetPedro/headroom-eval"><span class="k">◎</span> eval space</a>
+      <a class="pill alt" href="/notebook.html"><span class="k">▤</span> notebook</a>
+    </nav>
+    <p class="meta">17 models · 8 teachers · 4 architectures · $38.95 total</p>
+  </header>
+
+  <section class="rev">
+    <h2>the manuscript</h2>
+    <div class="grid">
+      <a class="card" href="/paper.html">
+        <span class="t">The Voting Ensemble Paradox</span>
+        <span class="d">Under k-of-N drop voting the ensemble collapses to a single order statistic — its weakest member. Three mechanisms resolve it.</span>
+      </a>
+      <a class="card" href="https://github.com/peterlodri-sec/kompress-ultra/blob/main/paper/main_v2.pdf">
+        <span class="t">KOMPRESS v2 — the PDF ⤓</span>
+        <span class="d">Geometric-Mean Consensus Distillation &amp; Spectral Rigidity for Edge Reasoning. The earlier manuscript, the full derivation.</span>
+      </a>
+      <a class="card" href="https://pocoo.vaked.dev/posts/2026-06-26-voting-ensemble-paradox">
+        <span class="t">Read the write-up</span>
+        <span class="d">You build an ensemble. You expect it to be better. It's worse. Formalised, proven, and fixed.</span>
+      </a>
+      <a class="card" href="https://pocoo.vaked.dev/posts/2026-06-25-the-loop-shipped">
+        <span class="t">The loop shipped</span>
+        <span class="d">17 models, 8 teachers, 4 architectures, $38.95 total — the whole experiment behind the paper.</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="rev">
+    <h2>the number</h2>
+    <div class="stats">
+      <div><b>0.955</b>heretic-exact @ 15% compression</div>
+      <div><b>0.993</b>exact-keep rate</div>
+      <div><b>~78%</b>token savings</div>
+      <div><b>149M</b>ModernBERT base</div>
+    </div>
+  </section>
+
+  <section class="rev">
+    <h2>everything else</h2>
+    <div class="grid">
+      <a class="card" href="https://huggingface.co/PeetPedro"><span class="t">Models</span><span class="d">Kompress v2 → v8 in the open, on Hugging Face.</span></a>
+      <a class="card" href="https://github.com/peterlodri-sec/longrun-eval-kompress"><span class="t">Research repository</span><span class="d">Harnesses, baselines, run scripts, raw results.</span></a>
+      <a class="card" href="https://github.com/peterlodri-sec/loopkit"><span class="t">LoopKit</span><span class="d">A loop-experiment-researcher template, so anyone can scaffold from here.</span></a>
+      <a class="card" href="https://huggingface.co/spaces/PeetPedro/headroom-eval"><span class="t">Eval space</span><span class="d">Interactive headroom evaluation.</span></a>
+      <a class="card" href="https://pocoo.vaked.dev"><span class="t">Blog</span><span class="d">pocoo.vaked.dev — the loop, written down.</span></a>
+      <a class="card" href="https://www.patreon.com/peterlodri"><span class="t">♥ support</span><span class="d">Keep the loop running.</span></a>
+    </div>
+  </section>
+
+  <footer>
+    <div>kompress · learnable context compression · open science · {−1, 0, +1}</div>
+    <div>from love, from within · 8b-is · om mani padme hum</div>
+  </footer>
+</main>
+
+<script>
+// Reveal first — a WebGL failure must never be able to hide the content.
+(() => {
+  const els = document.querySelectorAll('.rev');
+  if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
+  const io = new IntersectionObserver((entries) => {
+    for (const en of entries) if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+  }, { threshold: 0.15 });
+  els.forEach((el) => io.observe(el));
+})();
+
+(() => {
+  const canvas = document.getElementById('field');
+  const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, powerPreference: 'high-performance' });
+  if (!gl) { canvas.style.display = 'none'; return; }
+
+  const VERT = `#version 300 es
+  precision highp float;
+  const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
+  void main(){ gl_Position = vec4(P[gl_VertexID], 0.0, 1.0); }`;
+
+  const FRAG = `#version 300 es
+  precision highp float;
+  out vec4 fragColor;
+  uniform vec2  u_res;
+  uniform float u_time;
+  uniform vec2  u_mouse;
+  uniform float u_motion;
+
+  // hash / value noise / fbm
+  float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
+  float noise(vec2 p){
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1,0)), u.x),
+               mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), u.x), u.y);
+  }
+  float fbm(vec2 p){
+    float a = 0.5, s = 0.0;
+    for (int i = 0; i < 6; i++){ s += a * noise(p); p = p * 2.02 + 11.7; a *= 0.5; }
+    return s;
+  }
+  const vec3 C_A = vec3(0.055, 0.086, 0.235);  // deep indigo
+  const vec3 C_B = vec3(0.596, 0.286, 0.902);  // violet
+  const vec3 C_C = vec3(0.086, 0.780, 1.000);  // cyan
+  const vec3 C_D = vec3(1.000, 0.373, 0.694);  // pink
+
+  void main(){
+    vec2 res = u_res;
+    vec2 p = (gl_FragCoord.xy * 2.0 - res) / min(res.x, res.y);
+    float t = u_time * 0.055 * u_motion;
+
+    // cursor draws the field toward itself
+    vec2 m = (u_mouse * 2.0 - res) / min(res.x, res.y);
+    vec2 d = p - m;
+    float mf = exp(-dot(d, d) * 1.35);
+    p += mf * 0.34 * normalize(d + 1e-5) * sin(t * 3.1 + dot(p, p) * 2.0);
+
+    // domain-warped fbm — the ink
+    vec2 q = vec2(fbm(p * 1.15 + vec2(0.0, t)),
+                  fbm(p * 1.15 + vec2(5.2, -t)));
+    vec2 r = vec2(fbm(p * 1.9 + 3.4 * q + vec2(1.7, 9.2) + t * 0.6),
+                  fbm(p * 1.9 + 3.4 * q + vec2(8.3, 2.8) - t * 0.4));
+    float f = fbm(p * 1.5 + 3.0 * r);
+
+    // flow ribbons
+    float ribbons = 0.5 + 0.5 * sin(6.2831 * (r.x + r.y) + t * 2.0 + mf * 3.0);
+    ribbons = pow(ribbons, 3.0);
+
+    vec3 col = C_A;
+    col = mix(col, C_B, smoothstep(0.20, 0.95, f));
+    col = mix(col, C_C, smoothstep(0.45, 1.00, length(r) * 0.82));
+    col = mix(col, C_D, smoothstep(0.55, 1.00, q.y) * 0.72);
+
+    // luminous filaments
+    col += C_C * ribbons * 0.30 * (0.35 + f);
+    col += C_D * pow(ribbons, 2.0) * 0.22;
+
+    // pointer bloom
+    col += (C_C * 0.85 + C_D * 0.35) * mf * 0.16;
+
+    // horizon glow + vignette
+    col += C_B * exp(-length(p - vec2(0.0, 1.15)) * 1.15) * 0.30;
+    float vig = smoothstep(2.35, 0.25, length(p * vec2(1.0, 0.82)));
+    col *= 0.30 + 0.70 * vig;
+
+    // filmic-ish tone + grain
+    col = col / (col + 0.86);
+    col = pow(col, vec3(0.92, 0.92, 0.95));
+    float g = hash(gl_FragCoord.xy + fract(u_time) * 91.7) - 0.5;
+    col += g * 0.022;
+
+    fragColor = vec4(col, 1.0);
+  }`;
+
+  function sh(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  let prog;
+  try {
+    prog = gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  } catch (e) { canvas.style.display = 'none'; return; }
+  gl.useProgram(prog);
+  const vao = gl.createVertexArray();
+  gl.bindVertexArray(vao);
+
+  const U = {
+    res: gl.getUniformLocation(prog, 'u_res'),
+    time: gl.getUniformLocation(prog, 'u_time'),
+    mouse: gl.getUniformLocation(prog, 'u_mouse'),
+    motion: gl.getUniformLocation(prog, 'u_motion'),
+  };
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dpr = () => Math.min(window.devicePixelRatio || 1, 2); // high-def, capped at 2x
+  let mTarget = { x: innerWidth * 0.5, y: innerHeight * 0.35 };
+  let mSmooth = { ...mTarget };
+
+  function resize(){
+    const s = dpr();
+    const w = Math.floor(innerWidth * s), h = Math.floor(innerHeight * s);
+    if (canvas.width !== w || canvas.height !== h){
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+  }
+  addEventListener('resize', resize, { passive: true });
+  addEventListener('pointermove', (e) => {
+    const s = dpr();
+    mTarget.x = e.clientX * s; mTarget.y = (innerHeight - e.clientY) * s;
+  }, { passive: true });
+
+  let t0 = performance.now();
+  function frame(now){
+    resize();
+    mSmooth.x += (mTarget.x - mSmooth.x) * 0.06;
+    mSmooth.y += (mTarget.y - mSmooth.y) * 0.06;
+    const time = reduce ? 12.0 : (now - t0) / 1000;
+    gl.uniform2f(U.res, canvas.width, canvas.height);
+    gl.uniform1f(U.time, time);
+    gl.uniform2f(U.mouse, mSmooth.x, mSmooth.y);
+    gl.uniform1f(U.motion, reduce ? 0.0 : 1.0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
