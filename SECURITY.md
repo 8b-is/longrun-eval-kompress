@@ -19,7 +19,7 @@ server, or notebook), please report it privately:
 1. **Do not open a public issue.**
 2. Email: contact via https://pocoo.vaked.dev (use the chat link for initial contact)
 3. Or use GitHub's private security advisory feature:
-   https://github.com/peterlodri-sec/longrun-eval-kompress/security/advisories/new
+   https://github.com/8b-is/longrun-eval-kompress/security/advisories/new
 
 You will receive a response within 72 hours. If the vulnerability is
 confirmed, a fix will be prioritized and a security advisory published.

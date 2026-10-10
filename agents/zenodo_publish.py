@@ -49,7 +49,7 @@ METADATA = {
     ],
     "related_identifiers": [
         {
-            "identifier": "https://github.com/peterlodri-sec/longrun-eval-kompress",
+            "identifier": "https://github.com/8b-is/longrun-eval-kompress",
             "relation": "isSupplementTo",
             "resource_type": "software",
         },
