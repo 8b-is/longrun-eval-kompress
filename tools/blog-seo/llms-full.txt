@@ -139,7 +139,7 @@ Context-Pruning Ensembles."
 
 - Interactive paper: https://kompress.vaked.dev/notebook/
 - Paper PDF: https://kompress.vaked.dev/paper/main.pdf
-- GitHub: https://github.com/peterlodri-sec/longrun-eval-kompress
+- GitHub: https://github.com/8b-is/longrun-eval-kompress
 - Model: https://huggingface.co/PeetPedro/kompress-v8
 - Dataset: https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood
 - Training engine: https://github.com/peterlodri-sec/loopkit

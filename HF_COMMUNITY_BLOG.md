@@ -82,7 +82,7 @@ Everything is public. All 18 models on HuggingFace. All experiment logs on pocoo
 - **Paper:** [kompress.vaked.dev](https://kompress.vaked.dev) — interactive with live paradox simulation
 - **Eval Space:** [PeetPedro/headroom-eval](https://huggingface.co/spaces/PeetPedro/headroom-eval) — Level 4 Hill Climbing Loop, continuously testing compression
 - **LoopKit:** [github.com/peterlodri-sec/loopkit](https://github.com/peterlodri-sec/loopkit) — loop engineering starter kit
-- **Research repo:** [longrun-eval-kompress](https://github.com/peterlodri-sec/longrun-eval-kompress)
+- **Research repo:** [longrun-eval-kompress](https://github.com/8b-is/longrun-eval-kompress)
 - **CLI:** [headroom-eval-cli](https://github.com/peterlodri-sec/headroom-eval-cli)
 
 ## What We Learned

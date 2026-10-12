@@ -116,7 +116,7 @@ Report per-domain exact_keep_pct.
 ## Getting started
 
 ```bash
-git clone https://github.com/peterlodri-sec/longrun-eval-kompress.git
+git clone https://github.com/8b-is/longrun-eval-kompress.git
 cd longrun-eval-kompress
 pip install -r baselines/requirements.txt  # if exists
 python baselines/run_baselines.py          # verify current state
@@ -124,7 +124,7 @@ python baselines/run_baselines.py          # verify current state
 
 ## Contact
 
-Open a GitHub issue: https://github.com/peterlodri-sec/longrun-eval-kompress/issues
+Open a GitHub issue: https://github.com/8b-is/longrun-eval-kompress/issues
 Title: "GPU experiments: [your name]"
 
 ---

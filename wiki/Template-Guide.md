@@ -4,7 +4,7 @@ This repo is a **loop-experiment-researcher** template. Scaffold a new research 
 
 ## Quick start
 ```bash
-git clone https://github.com/peterlodri-sec/longrun-eval-kompress.git my-research
+git clone https://github.com/8b-is/longrun-eval-kompress.git my-research
 cd my-research
 python template/scaffold.py --name "my-research" --description "Studying X via loop Y"
 ```
@@ -37,7 +37,7 @@ my-research/
 5. The correctable loop invariant: 3 iterations, no improvement → stop
 6. Write up in `paper/`
 
-See [template/README.md](https://github.com/peterlodri-sec/longrun-eval-kompress/blob/main/template/README.md) for the full guide.
+See [template/README.md](https://github.com/8b-is/longrun-eval-kompress/blob/main/template/README.md) for the full guide.
 
 ## Included examples
 

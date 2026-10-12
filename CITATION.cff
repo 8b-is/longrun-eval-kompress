@@ -7,7 +7,7 @@ authors:
     family-names: "Lodri"
     orcid: "https://huggingface.co/PeetPedro"
     affiliation: "Independent, community-funded research"
-repository-code: "https://github.com/peterlodri-sec/longrun-eval-kompress"
+repository-code: "https://github.com/8b-is/longrun-eval-kompress"
 url: "https://pocoo.vaked.dev"
 abstract: >-
   Multi-checkpoint voting ensembles with asymmetric training-data floors
