@@ -25,7 +25,7 @@
 
 ## Links
 
-- Manuscript repo: https://github.com/peterlodri-sec/longrun-eval-kompress
+- Manuscript repo: https://github.com/8b-is/longrun-eval-kompress
 - Production model: https://huggingface.co/PeetPedro/kompress-v8
 - Orchestration engine: https://github.com/peterlodri-sec/loopkit
 - Dataset: https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood

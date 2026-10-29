@@ -1,13 +1,13 @@
 # loop-experiment-researcher template
 
 > Scaffold a Loop Engineering research project from an idea to a published manuscript.
-> Based on the [longrun-eval-kompress](https://github.com/peterlodri-sec/longrun-eval-kompress) project.
+> Based on the [longrun-eval-kompress](https://github.com/8b-is/longrun-eval-kompress) project.
 
 ## Quick start
 
 ```bash
 # Clone this template
-git clone https://github.com/peterlodri-sec/longrun-eval-kompress.git my-research-idea
+git clone https://github.com/8b-is/longrun-eval-kompress.git my-research-idea
 cd my-research-idea
 
 # Scaffold your project
@@ -108,7 +108,7 @@ The included GitHub Actions workflow checks:
 
 ## Based on
 
-This template was extracted from [longrun-eval-kompress](https://github.com/peterlodri-sec/longrun-eval-kompress), an open-science manuscript (target venue ICLR 2027) produced by the Loop Engineering paradigm for $38.95 total. The project that produced it followed exactly this workflow: genesis contract → skill file → loop iterations → manuscript → baselines → notebook → MCP server → HTML sites.
+This template was extracted from [longrun-eval-kompress](https://github.com/8b-is/longrun-eval-kompress), an open-science manuscript (target venue ICLR 2027) produced by the Loop Engineering paradigm for $38.95 total. The project that produced it followed exactly this workflow: genesis contract → skill file → loop iterations → manuscript → baselines → notebook → MCP server → HTML sites.
 
 ## License
 

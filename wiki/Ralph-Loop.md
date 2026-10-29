@@ -98,10 +98,10 @@ ralph is doing loop engineering. he just doesn't know it.
 
 | File | What it does | Link |
 |------|-------------|------|
-| `ralph.py` | everything. the whole thing. one file. | [view](https://github.com/peterlodri-sec/longrun-eval-kompress/blob/main/template/examples/ralph-loop/ralph.py) |
-| `STATE.md` | ralph's state (he updates it sometimes) | [view](https://github.com/peterlodri-sec/longrun-eval-kompress/blob/main/template/examples/ralph-loop/STATE.md) |
-| `genesis.md` | the contract (ralph wrote it) | [view](https://github.com/peterlodri-sec/longrun-eval-kompress/blob/main/template/examples/ralph-loop/genesis.md) |
-| `README.md` | you're reading it | [view](https://github.com/peterlodri-sec/longrun-eval-kompress/blob/main/template/examples/ralph-loop/README.md) |
+| `ralph.py` | everything. the whole thing. one file. | [view](https://github.com/8b-is/longrun-eval-kompress/blob/main/template/examples/ralph-loop/ralph.py) |
+| `STATE.md` | ralph's state (he updates it sometimes) | [view](https://github.com/8b-is/longrun-eval-kompress/blob/main/template/examples/ralph-loop/STATE.md) |
+| `genesis.md` | the contract (ralph wrote it) | [view](https://github.com/8b-is/longrun-eval-kompress/blob/main/template/examples/ralph-loop/genesis.md) |
+| `README.md` | you're reading it | [view](https://github.com/8b-is/longrun-eval-kompress/blob/main/template/examples/ralph-loop/README.md) |
 
 ## try it
 

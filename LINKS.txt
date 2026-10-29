@@ -3,7 +3,7 @@
 # ============================================================================
 
 # --- This repository ---
-https://github.com/peterlodri-sec/longrun-eval-kompress — this manuscript repository
+https://github.com/8b-is/longrun-eval-kompress — this manuscript repository
 
 # --- Models (HuggingFace) ---
 https://huggingface.co/PeetPedro/kompress-v8 — production model (C3 self-distillation, Qwen2.5 teacher)

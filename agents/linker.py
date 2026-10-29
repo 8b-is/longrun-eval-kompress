@@ -33,11 +33,11 @@ SKIP_URLS = {
     "https://api.deepseek.com",
     "https://img.shields.io",
     "https://arxiv.org/submit",
-    "https://github.com/peterlodri-sec/longrun-eval-kompress.git",
-    "https://github.com/peterlodri-sec/longrun-eval-kompress/actions",
-    "https://github.com/peterlodri-sec/longrun-eval-kompress/blob/main/template",
-    "https://github.com/peterlodri-sec/longrun-eval-kompress/issues",
-    "https://github.com/peterlodri-sec/longrun-eval-kompress/security",
+    "https://github.com/8b-is/longrun-eval-kompress.git",
+    "https://github.com/8b-is/longrun-eval-kompress/actions",
+    "https://github.com/8b-is/longrun-eval-kompress/blob/main/template",
+    "https://github.com/8b-is/longrun-eval-kompress/issues",
+    "https://github.com/8b-is/longrun-eval-kompress/security",
 }
 
 # Reference-only URLs in LINKS.txt that are NOT cited in code files

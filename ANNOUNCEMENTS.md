@@ -45,7 +45,7 @@ The learned component contributes +0.083 over chance. TextRank confirms extracti
 
 **Tweet 6:**
 Everything is open-source:
-- Paper: github.com/peterlodri-sec/longrun-eval-kompress
+- Paper: github.com/8b-is/longrun-eval-kompress
 - Model: huggingface.co/PeetPedro/kompress-v8
 - Engine: github.com/peterlodri-sec/loopkit
 - Dataset: huggingface.co/datasets/PeetPedro/ultrawhale-dogfood
@@ -76,7 +76,7 @@ If you use kompress-v8, please cite:
 @software{lodri2026kompress,
   author = {Peter Lodri},
   title = {Asymmetric Loss Modulation Resolves the Voting Ensemble Paradox in Learned Context-Pruning Ensembles},
-  url = {https://github.com/peterlodri-sec/longrun-eval-kompress},
+  url = {https://github.com/8b-is/longrun-eval-kompress},
   year = {2026},
   license = {Apache-2.0}
 }
@@ -138,7 +138,7 @@ We prove that multi-checkpoint voting ensembles with asymmetric training-data fl
 **Key finding:** Label quality is the bottleneck, not model capacity or data quantity.
 
 **Everything is open-source:**
-- Paper + code: https://github.com/peterlodri-sec/longrun-eval-kompress
+- Paper + code: https://github.com/8b-is/longrun-eval-kompress
 - Model: https://huggingface.co/PeetPedro/kompress-v8
 - ENTHEA visualizer: https://kompress.vaked.dev
 - Interactive paper: https://kompress.vaked.dev/notebook/
@@ -156,7 +156,7 @@ just open-sourced an open-science manuscript: "Asymmetric Loss Modulation Resolv
 
 the paradox: adding voters to a compression ensemble makes it WORSE. we prove it and fix it.
 
-paper + code: github.com/peterlodri-sec/longrun-eval-kompress
+paper + code: github.com/8b-is/longrun-eval-kompress
 
 **Post 2 (ralph-loop):**
 meet ralph-loop -- the most stripped-down Loop Engineering example possible.

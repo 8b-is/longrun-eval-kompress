@@ -8,7 +8,7 @@
 >
 > Open-source LaTeX paper + baseline scripts + marimo notebook + MCP server. Total research cost: **$38.95** ($37.19 DeepSeek + $1.76 GPU).
 
-[![CI](https://github.com/peterlodri-sec/longrun-eval-kompress/actions/workflows/ci.yml/badge.svg)](https://github.com/peterlodri-sec/longrun-eval-kompress/actions/workflows/ci.yml)
+[![CI](https://github.com/8b-is/longrun-eval-kompress/actions/workflows/ci.yml/badge.svg)](https://github.com/8b-is/longrun-eval-kompress/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Built with marimo](https://img.shields.io/badge/built%20with-marimo-00d4ff.svg)](https://marimo.io)
 [![Sponsor](https://img.shields.io/badge/sponsor-peterlodri--sec-ff69b4.svg)](https://github.com/sponsors/peterlodri-sec)
@@ -81,7 +81,7 @@ marimo export html-wasm notebook.py -o site --no-execute
 
 ```bash
 # Clone
-git clone https://github.com/peterlodri-sec/longrun-eval-kompress.git
+git clone https://github.com/8b-is/longrun-eval-kompress.git
 cd longrun-eval-kompress
 
 # Option A: Nix (reproducible, all deps included)
@@ -239,7 +239,7 @@ This repo is a **loop-experiment-researcher** template. Scaffold a new research
 project from an idea to a published manuscript:
 
 ```bash
-git clone https://github.com/peterlodri-sec/longrun-eval-kompress.git my-research
+git clone https://github.com/8b-is/longrun-eval-kompress.git my-research
 cd my-research
 python template/scaffold.py --name "my-research" --description "Studying X via loop Y"
 ```
