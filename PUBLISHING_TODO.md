@@ -90,7 +90,7 @@
     4. "Is the $38.95 cost framing relevant to the scientific contribution, or a distraction?"
   - Paste the review into the GitHub issue
 
-- [x] **2.5** Address every actionable point from both reviews:
+- [ ] **2.5** Address every actionable point from both reviews (GLM review addressed; awaiting 2.3):
   - If both reviewers flag the same issue → fix it before submission
   - If one reviewer flags something the other doesn't → judgment call
   - Document what you changed and what you rejected, in the GitHub issue

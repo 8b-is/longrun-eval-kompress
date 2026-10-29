@@ -210,13 +210,13 @@ so agents run identically in GitHub Actions, local development, or agent-to-agen
 calls. Agents are advisory by design---they report pass/fail with structured
 details but never block the shipping loop.
 
-\subsection{Reproducibility and cost}
+\subsection{Reproducibility}
 \label{sec:loopkit:repro}
 
-All 15 kompress models were produced by LoopKit on vast.ai RTX~4090
-instances at \$0.38/hr. The total compute for the v3$\to$v4$\to$v5
-self-labeling chain (the paradox evidence) was \$0.55---one cold brew. The
+All kompress models in the series were produced by LoopKit on RTX~4090
+instances (see Section~\ref{sec:data} for compute accounting and artifact
+locations). The
 full loopkit repository, including the kompress loop that produced these
-models, is open-source at \url{https://github.com/peterlodri-sec/loopkit}
+models, is open-source at \url{https://github.com/8b-is/loopkit}
 with a Colab notebook for the minimal hello-loop
 (\texttt{notebooks/loopkit\_hello.ipynb}).

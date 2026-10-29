@@ -140,7 +140,6 @@ The large jump is v3$\to$v4 ($+0.025$ heretic, $\delta$ $0.054\to0$). v4$\to$v5
 regresses slightly ($0.967\to0.961$), with the SSL-cert-bypass stratum
 collapsing ($0.895\to0.789$). Applying the correctable-loop invariant---stop
 when the metric stops moving within three iterations---we halt at v4.
-Total cost: \$0.55.
 
 \subsection{The Voting Ensemble Paradox: empirical confirmation}
 \label{sec:eval:paradox}
@@ -319,7 +318,8 @@ correctable-loop invariant's halt decision.
 \begin{table}[h]
 \centering
 \caption{Full kompress version lineage (v2--v17) on the heretic eval. 17
-models trained, 8 teachers, 4 architectures, \$1.76 total compute. The
+models trained, 8 teachers, 4 architectures (see Section~\ref{sec:data} for
+compute and reproducibility details). The
 v3$\to$v4 jump is the self-labeling breakthrough (Mechanism~C); v4$\to$v5
 is the convergence ceiling; v6/v7 are the agent-distribution dead end; v8
 is C3 self-distillation with a Qwen2.5 teacher; v9--v14 are
