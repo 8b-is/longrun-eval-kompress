@@ -86,8 +86,8 @@ This paper makes the following contributions:
         functions and conditional probabilities over token strata.
   \item \textbf{Three complementary correctives.} We introduce and
         separate: (A) a $3.0\times$ weighted cross-entropy penalty on
-        critical-syntactic tokens during fine-tuning---the critical-token penalty; (B)
-        term; (B) a post-inference regex override that surgically
+        critical-syntactic tokens during fine-tuning---the critical-token
+        penalty; (B) a post-inference regex override that surgically
         force-keeps must-keep tokens at deployment; and (C) a self-labeling
         loop that uses A+B as an oracle to relabel and retrain, internalizing
         B so the inference override becomes redundant.

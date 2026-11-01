@@ -96,9 +96,14 @@ def generate_seal() -> dict:
 
 
 def compute_seal_hash(seal: dict) -> str:
-    """The seal itself has a hash — bind all fields into one digest."""
-    # Exclude sealed_at and seal_version from the hash (metadata, not content)
-    content = {k: v for k, v in seal.items() if k not in ("sealed_at", "seal_version")}
+    """The seal itself has a hash — bind all content fields into one digest."""
+    # Exclude sealed_at, seal_version, and git_head from the hash so committing
+    # .genesis_seal.json does not self-invalidate the seal on HEAD.
+    content = {
+        k: v
+        for k, v in seal.items()
+        if k not in ("sealed_at", "seal_version", "git_head")
+    }
     return hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
 
