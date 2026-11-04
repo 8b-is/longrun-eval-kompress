@@ -1,15 +1,15 @@
 {
-  "sealed_at": "2026-06-25T23:51:06.644377+00:00",
-  "git_head": "868eb1229973816cb03a6185db465f61badb6920",
+  "sealed_at": "2026-11-01T04:24:14.237424+00:00",
+  "git_head": "43162645936f2bd120dcb489de39667500e3f8f8",
   "manuscript": {
-    "total_lines": 1714,
+    "total_lines": 1868,
     "table_count": 14,
     "tex_file_count": 8,
     "environments_balanced": true
   },
   "baseline_results_sha256": "16b4eeddfbb74b2f8791fc21b71a6a4bb68fc40bb901fa1124a03df5e24bc27d",
-  "genesis_contract_sha256": "00ffac7ef54be12b946dc9ecfc8637e1eda07dc497cf64232f3880a091c769ce",
-  "agents_md_sha256": "fc2f0e08014c1d193c4e21136f20ea20f71fa3369ea4126c55dd0a899b246ae5",
+  "genesis_contract_sha256": "3a9259d31b79729435569893eed83daba95da6ba422e71eb811a1720873093ed",
+  "agents_md_sha256": "ed8c726ddee05cfd189e54bf7a74ea98dc61e7fc3dc76c95ebc01794948ed372",
   "seal_version": "1.0.0",
-  "seal_hash": "8e1b096a4950bdb5ed981efadc558992ea03ee79b6e86f61060ffa70a511b6a9"
+  "seal_hash": "f3a11460335f5fa53da01d39788ea484df19bbd0ed7ed44f68ec2dd23a5cd8ea"
 }

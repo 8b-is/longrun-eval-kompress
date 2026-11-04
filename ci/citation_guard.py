@@ -1,23 +1,30 @@
 #!/usr/bin/env python3
-"""Citation guard — validates that all \citep{} in the paper have matching .bib entries.
+r"""Citation guard — validates that all \citep{} in the paper have matching .bib entries.
 
 CI gate: fails if a citation is missing from references.bib.
 """
 import re, sys
 from pathlib import Path
 
-PAPER = Path("paper/experimental_evaluation.tex")
-BIB = Path("paper/references.bib")
+PAPER_DIR = Path("paper")
+BIB = PAPER_DIR / "references.bib"
 
-if not PAPER.exists():
+if not PAPER_DIR.exists():
     print("No paper found — skipping citation guard.")
     sys.exit(0)
 
-paper = PAPER.read_text()
 bib = BIB.read_text() if BIB.exists() else ""
 
-cites = set(re.findall(r'\\citep\{([^}]+)\}', paper))
-missing = [c for c in cites if c not in bib]
+cites = set()
+for tex_file in sorted(PAPER_DIR.glob("*.tex")):
+    text = tex_file.read_text()
+    for match in re.findall(r'\\cite[pt]?\{([^}]+)\}', text):
+        for key in match.split(","):
+            key = key.strip()
+            if key:
+                cites.add(key)
+
+missing = sorted(c for c in cites if c not in bib)
 
 if missing:
     print(f"❌ {len(missing)} missing citations: {missing}")

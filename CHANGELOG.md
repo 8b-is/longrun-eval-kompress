@@ -1,5 +1,45 @@
 # Changelog
 
+## [2026-11-01] — v1.0.0
+
+### Added
+
+- feat: add Patreon support link (`52ab57d`)
+- feat: blog article with LaTeX math + 3 SVG images (hero, pareto, paradox) (`3828433`)
+- feat: HF Community Blog article — 17 models, paradox, loop engineering (`3bfa414`)
+- feat: simplify kompress.vaked.dev — minimal panel, clean hints (`7ae77ce`)
+- feat: pocoo.vaked.dev logo (`1112fa8`)
+- feat: 'clean pdf' link → pocoo blog post (`cc92735`)
+- feat: easter eggs — snake game, whale mode, loopk art, konami code (`a0dbab4`)
+- feat: ENTHEA console log — phily reference (`96cd261`)
+- feat: deploy script — push + clear CF + bust GH cache (`1a9af74`)
+
+### Fixed
+
+- fix: force Pages redeploy (`e68cfe4`)
+- fix: move /notebook + /paper to root .html for Pages compat (`c4a9bfc`)
+- fix: cache-control for fresh deploys (`e3c2552`)
+- fix: paper → /paper/ HTML page, bigger text (`ec077ae`)
+
+### Other
+
+- fix(paper): deduplicate appendix command, consolidate cost references, and scope TODO 2.5 (`c0045b8`)
+- Point every reference at the repository's new home (`d33d5f4`)
+- Stop asserting the ICLR 2027 venue in the docs (`2ad0716`)
+- Redraw the kompress site as a live field and drop the venue claim (`76a0de4`)
+- fix(site): radical simplification — clean landing page, no JS, no canvas (`38d58d3`)
+- deploy 2026-06-26T07:39:39Z (`cdc3d06`)
+- feat(site): funky sota CSS — glow, float, parallax, gradient border, glass tilt (`bcf4452`)
+- fix(site): panel collapsed by default (`d338634`)
+- feat(site): header +150% bigger (`971cf4f`)
+- feat(site): 75% default zoom (`a4ad484`)
+- feat(site): 'this is just fun, paper →' overlay (`503211e`)
+- fix(site): hide substance emulation, paper→PDF link, github→new tab (`72395d9`)
+- feat(site): bigger controls, collapsed panel, epilepsy warning, simplified (`6ed432c`)
+- feat(site): /notebook — LoopKit Colab + Whale TUI links (`17c625d`)
+- feat(site): academic paper panel — abstract, live paradox sim, results table, links (`13f3897`)
+- Address GLM review feedback (`efa0e39`)
+
 ## [2026-06-26] — initial
 
 ### Added

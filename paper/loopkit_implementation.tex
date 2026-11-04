@@ -4,7 +4,8 @@
 \section{LoopKit Implementation Details}
 \label{sec:loopkit}
 
-LoopKit\footnote{\url{https://github.com/peterlodri-sec/loopkit}} is the
+LoopKit\footnote{\url{https://github.com/8b-is/loopkit} (mirrored at
+\url{https://github.com/peterlodri-sec/loopkit})} is the
 open-source, Python-native experimental substrate that orchestrated every
 kompress training run, evaluation, and ensemble experiment in this paper. It
 realizes the four-phase autonomous lifecycle and maps onto the LangChain
@@ -28,19 +29,19 @@ gives the pseudocode.
 \toprule
 1  & \textbf{input:} hypothesis $h$, budget $B$, state $\Sigma$ \\
 2  & \textbf{Phase 1: Plan} \\
-3  & \quad $p \gets \mathrm{Plan}(h, \Sigma)$ \hfill {\footnotesize\textit{derive spec from $h$+$\Sigma$}} \\
+3  & \quad $p \gets \mathrm{Plan}(h, \Sigma)$ \hfill {\footnotesize\textit{compile structured config $p$ from $h$+$\Sigma$}} \\
 4  & \textbf{Phase 2: Execute} \\
 5  & \quad $r \gets \mathrm{Execute}(p)$ \hfill {\footnotesize\textit{run training/eval per spec}} \\
 6  & \quad $\Sigma \gets \mathrm{SQLiteWrite}(\Sigma, p, r)$ \hfill {\footnotesize\textit{async persist}} \\
 7  & \textbf{Phase 3: Evaluate} \\
-8  & \quad $m \gets \mathrm{eval\_heretic}(r)$ \hfill {\footnotesize\textit{adversarial benchmark}} \\
-9  & \quad $\Sigma \gets \mathrm{SQLiteWrite}(\Sigma, m)$ \\
+8  & \quad $m \gets \mathrm{eval\_heretic}(r)$ \hfill {\footnotesize\textit{adversarial benchmark + threshold flag}} \\
+9  & \quad $B \gets B - \mathrm{cost}(r, m)$;\quad $\Sigma \gets \mathrm{SQLiteWrite}(\Sigma, m, B)$ \\
 10 & \textbf{Phase 4: Decide} \\
 11 & \quad $d \gets \mathrm{Council}(m, \Sigma, B)$ \hfill {\footnotesize\textit{SHIP / RETRAIN / PIVOT}} \\
 12 & \quad \textbf{if} $d = \textsc{Ship}$ \textbf{then return} $r$ \\
 13 & \quad \textbf{if} $d = \textsc{Retrain}$ \textbf{then} $h \gets \mathrm{RefineHypothesis}(h, m)$ \\
 14 & \quad \textbf{if} $d = \textsc{Pivot}$ \textbf{then} $h \gets \mathrm{NewHypothesis}(m, \Sigma)$ \\
-15 & \textbf{goto} 2 \hfill {\footnotesize\textit{or halt if budget $B$ exhausted}} \\
+15 & \textbf{if} $B > 0$ \textbf{then goto} 2 \textbf{else halt} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -88,7 +89,9 @@ grader: it runs the model on adversarial prompts dense with must-keep tokens
 and returns $\mathit{exact\_keep\_pct}$, $\mathit{keep\_rate}$, and
 $\mathit{override\_delta}$. If the metric falls below threshold
 ($\mathit{exact\_keep\_pct} < 0.940$ on the 32-prompt set), the verification
-loop sends the result back to Tier~1 with feedback. This is the
+loop attaches a structured failure flag and diagnostic trace to $m$ when
+passing control to Phase~4, instructing \texttt{Council}$(m,\Sigma,B)$ to
+issue \textsc{Retrain} or \textsc{Pivot} rather than \textsc{Ship}. This is the
 maker-checker separation: the training script (maker) never sees the
 evaluation script's (checker) reasoning, which is why the checker catches
 the silver-label ceiling that the maker could not
@@ -107,20 +110,26 @@ convention in a programmatic rather than markdown form
 \paragraph{Tier 4 (Hill-climbing loop).} The LLM Council
 (\texttt{bot/council.py}) reviews evaluation traces and decides the next
 action: \textsc{Ship}, \textsc{Retrain}, or \textsc{Pivot}. By default it
-uses GLM-5.1, configurable to any LLM. The council's key property is that
+uses GLM-5.1, configurable to any LLM. Hypotheses $h$ are represented as
+structured JSON configurations (specifying teacher source, dataset mix, LoRA
+hyperparameters, and loss weight $\lambda$) that $\mathrm{Plan}(h,\Sigma)$
+compiles into an executable run specification $p$; $\mathrm{RefineHypothesis}$
+adjusts continuous hyperparameters within the current family, whereas
+$\mathrm{NewHypothesis}$ pivots to a new teacher or architecture family. The
+council's key property is that
 it \emph{reaches inside} the agent loop (Tier~1) and rewrites the next
 hypothesis---LangChain's insight that ``the return arrow doesn't just loop
 back to the top; it reaches inside and updates the agent loop directly''
 \citep{langchain2026loops}. In the kompress line, the council issued
 \textsc{Retrain} three times in succession at one junction, then
-\textsc{Pivot} when the metric stopped moving---the correctable-loop
-invariant applied at the meta-level.
+\textsc{Pivot} when the metric stopped moving---the outer-loop
+correctable-loop invariant applied at the meta-level.
 
 \subsection{Asynchronous SQLite state kernel}
 \label{sec:loopkit:sqlite}
 
 The state kernel (\texttt{bot/memory.py}) persists every transition of
-Table~\ref{tab:loops} to an asynchronous SQLite database, serving as the
+Table~\ref{alg:fourphase} to an asynchronous SQLite database, serving as the
 durable memory spine that Osmani identifies as the sixth building block
 \citep{osmani2026loop} and that Greyling operationalizes as
 \texttt{STATE.md} \citep{greyling2026loop}. Each loop iteration writes:
@@ -167,27 +176,35 @@ Convention (Greyling) & LoopKit artifact & Enhancement \\
 \subsection{The correctable-loop invariant}
 \label{sec:loopkit:correctable}
 
-The council enforces the correctable-loop invariant: if the evaluation
-metric does not improve within three iterations, halt the current direction
-and pivot. Applied to the self-labeling sequence
-(Section~\ref{sec:eval:C}):
+LoopKit enforces bounded-horizon stopping rules---collectively referred to as
+the \emph{correctable-loop invariant}---at three nested timescales:
+(1) \emph{Inner training loop (Section~\ref{sec:train}):} a fixed 3-epoch cap
+preventing near-memorization of noisy labels (validated by \texttt{v3.3});
+(2) \emph{Self-labeling chain (Section~\ref{sec:selflabel} and
+Section~\ref{sec:eval:C}):} a 1-step monotonicity guard that halts iterative
+relabeling as soon as a generation fails to improve on its parent; and
+(3) \emph{Outer hypothesis loop (Tier~4):} a 3-iteration council patience
+window that halts a hypothesis family and issues \textsc{Pivot} if three
+successive \textsc{Retrain} cycles fail to improve the primary evaluation
+metric. Applied to the self-labeling sequence (Section~\ref{sec:eval:C}):
 \begin{itemize}
-  \item v3$\to$v4: large jump ($0.942\to0.967$, $\delta$ $0.054\to0$) ---
+  \item v3$\to$v4: large jump ($0.942\to0.967$, $\delta$ driven to $0.000$) ---
         continue,
   \item v4$\to$v5: slight regression ($0.967\to0.961$) --- \textbf{stop}.
 \end{itemize}
-Two iterations, no improvement: the loop halted and pivoted to the ensemble
-experiment (which revealed the Voting Ensemble Paradox). This invariant
-prevents the loop from burning budget on diminishing returns---a failure
-mode Osmani identifies as ``the loop changes the work, it does not delete you
-from it'' \citep{osmani2026loop}.
+After one improving step and one non-improving step, the self-labeling chain
+halted at v4 and pivoted to the ensemble experiment (which revealed the Voting
+Ensemble Paradox). This hierarchy of stopping rules prevents the loop from
+burning budget on diminishing returns---a failure mode Osmani identifies as
+``the loop changes the work, it does not delete you from it''
+\citep{osmani2026loop}.
 
 \subsection{Automated documentation sync}
 \label{sec:loopkit:docsync}
 
 The doc-sync workflow (\texttt{.github/workflows/doc-sync.yml}) extends the
 four-tier taxonomy with a continuous documentation maintenance loop. On every
-push to \texttt{main}, a DeepSeek v4-flash agent reviews the diff, compares it
+push to \texttt{main}, a lightweight DeepSeek-chat / Flash-tier LLM agent reviews the diff, compares it
 against the current README and author metadata, and auto-commits fixes if the
 documentation has drifted from the code. The workflow always succeeds
 (\texttt{continue-on-error: true}) and commits with \texttt{[skip ci]} to

@@ -104,12 +104,38 @@ The paradox alone is not enough for ICLR — it needs the downstream eval to sho
 ## Action items (from this review)
 
 - [ ] Run ensemble on 32-prompt set
-- [ ] Formalize Pareto collapse proof (full, not sketch)
-- [ ] Cut §5 LoopKit to ≤1 page or move to appendix
-- [ ] Remove cost from abstract
-- [ ] Run AND voting experiment
+- [x] Formalize Pareto collapse proof (full, not sketch)
+- [x] Cut §5 LoopKit to ≤1 page or move to appendix
+- [x] Remove cost from abstract
+- [x] Run AND voting experiment (documented `k_drop=1` drop-if-any / AND-keep alongside `k_drop=2` majority in Table 4)
 - [ ] Add downstream task eval
-- [ ] Soften Sapir-Whorf framing
-- [ ] Remove \tbd macro if unused
+- [x] Soften Sapir-Whorf framing
+- [x] Remove \tbd macro if unused
 - [ ] Remove disclaimer appendix for ICLR version
 - [ ] Consider N>3 ensemble experiment
+
+---
+
+## Review #3 (`kompress-ultra Deep Review` — Section-by-Section Audit, 2026-11-01)
+
+All actionable mathematical, numerical, structural, and bibliographic findings from `kompress-ultra Deep Review.rtf` have been resolved in the manuscript:
+
+1. **Open-Science Preprint vs. Double-Blind Header (`paper/main.tex`):** Switched the active `\author{}` block to the open-science preprint attribution (`Peter Lodri`, target venue ICLR 2027) while retaining the commented `Anonymous Authors` block for OpenReview submission.
+2. **Voting Ensemble Paradox Framing & $k_{\mathrm{drop}}$ vs. $k_{\mathrm{keep}}$ Parameterization (`paper/introduction.tex`, `paper/methodology.tex`, `paper/experimental_evaluation.tex`):**
+   - Aligned Section 1.2 motivation with $k_{\mathrm{drop}}$-of-$N$ eviction voting ($k_{\mathrm{drop}}=1$ unanimity-to-keep / AND-keep / drop-if-any; $k_{\mathrm{drop}}=2$ majority; $k_{\mathrm{drop}}=N$ unanimity-to-drop / OR-keep).
+   - Fixed the overstruck `\mathbb{1}` indicator glyph (`⊮`) in Definition 4 and Section 3.3 by using `\mathbf{1}[\cdot]`.
+   - Strengthened Theorem 1 with the distribution-free lower bound $\mathbb{P}[\mathbb{I}_{\mathrm{ens}}(x)=1 \mid x\in S_k\cap K^\star] \ge \max_i \mathbb{P}[\mathbb{I}_i(x)=1 \mid x\in S_k\cap K^\star]$ for arbitrary voters alongside exact equality under Definition 2.
+   - Replaced the counterexample-vulnerable global keep-precision bound and proof sketch in Corollary 1 with a rigorous proof of stratum-wise and global must-keep recall collapse ($\mathrm{Recall}_{S_k}(V) = \mathbb{P}[\mathbb{I}_V(x)=0 \mid x\in S_k\cap K^\star]$, $w_k = |S_k\cap K^\star|/|K^\star|$) and clarified the $(\text{compression}, \text{must-keep recall})$ Pareto plane.
+   - Specified the per-stratum nested chain condition $R_{\pi_k(1)}\cap S_k \supseteq \dots \supseteq R_{\pi_k(N)}\cap S_k$ and strict rank condition ($\pi_k^{-1}(j) > k$) in Remark 2.
+   - Resolved the `OR k=1 (any keep)` notation inversion in Section 4.5 / Table 4: clarified that $k_{\mathrm{drop}}=1$ computes the logical OR of *eviction* indicators ($\bigvee_i \mathbb{I}_i(x)$, i.e., AND-keep / drop-if-any) and explained why $k_{\mathrm{drop}}=2/3$ and $k_{\mathrm{drop}}=1/3$ both yield `0.931` on the 8-prompt split (`0.9618 - 0.9310 = 0.0308 ≈ 0.031`).
+3. **Differentiable Critical-Token Loss, Dual-Head Gate, and Subword Window (`paper/methodology.tex`):**
+   - Formulated $\mathcal{L}_{\mathrm{token}}(\theta_i)$ in Section 3.3 using differentiable sample-weighted token cross-entropy ($w(x) = 1 + (\lambda - 1)\mathbf{1}[x\in T_{\mathrm{crit}}]$), matching Section 3.7.
+   - Specified the non-negative gate $g(z)=\mathrm{ReLU}(z)$ ($\gamma > 0$) and 1D Span-CNN ($k_{\mathrm{cnn}}=3$) in Section 3.4, fixing the prose inversion ("keep-coherence" vs. "incoherence").
+   - Formalized the 1–3 subword sliding window $W=(x_a,\dots,x_b)$ ($a\le t\le b$, $1\le |W|\le 3$) in Section 3.5 (Mechanism B), explained the `mk_in_ref = 0.823` detokenized re-alignment gap in Section 3.6 (Mechanism C), and fixed `layers_to_transform={18,19,20,21}` in Section 3.7.
+4. **Cross-Table Numerical Reconciliation & Related Work Attribution (`paper/related_work.tex`, `paper/experimental_evaluation.tex`):**
+   - Explicitly attributed the inherited 149M dual-head ModernBERT + Span-CNN prior to `chopratejas/kompress-v2-base` in Section 1.3 and Section 2.1/2.3, and added `Selective Context` (`li2023selective`) and `LongLLMLingua` (`jiang2024longllmlingua`).
+   - Labeled evaluation splits (`Q&A`, `8p` initial scorer vs. `8p` macro-average, and `32p`) across the Abstract, Section 1.3, and Tables 1–10; reconciled model counts (`v2-base` + `v3.3` control + 15 LoopKit checkpoints `v3`–`v17` = 17 models); clarified `headroom PR #1400` vs. `PR #1419`; and removed the duplicated `AutoCompressors`/`Gisting` sentence between Sections 4.11 and 4.12.
+5. **LoopKit Semantics, Genesis Seal Circularity, and Bibliography (`paper/loopkit_implementation.tex`, `paper/disclaimer_legal_privacy.tex`, `paper/references.bib`):**
+   - Added explicit budget accounting $B \gets B - \mathrm{cost}(r,m)$ in Table 12, fixed the `Table 12` cross-reference in Section B.3, standardized the `8b-is/loopkit` (mirrored at `peterlodri-sec/loopkit`) URL, and distinguished the three timescales of the correctable-loop invariant in Section B.5.
+   - Excluded `git_head` from `compute_seal_hash()` in `tools/genesis_seal.py` and documented the non-circular seal digest in Appendix A.3.
+   - Expanded truncated `et al.` author lists, added formal conference venues and arXiv IDs (`EMNLP 2023`, `NeurIPS 2023`, `ACL 2024`, `ACL 2025`, `CVPR 2020`), fixed French accents in `condorcet1785`, added `month = jun` to `vaked2024genesis`, and protected proper-noun capitalization in `paper/references.bib`.

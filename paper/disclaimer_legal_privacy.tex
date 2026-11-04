@@ -54,9 +54,13 @@ research that operates outside traditional institutional review structures.
 \paragraph{Repo-level genesis seal.} In addition to the dataset-level seal,
 this repository carries a \emph{genesis seal} (\texttt{.genesis\_seal.json})
 that cryptographically binds the current repo state to the genesis contract.
-The seal is a SHA-256 hash over: (1) the genesis contract text in this
-appendix, (2) the manuscript line count and table count, (3) the baseline
-results JSON, and (4) the git HEAD commit hash. Any change to the manuscript,
+The seal records the current \texttt{git\_head} commit metadata alongside a
+SHA-256 content digest (\texttt{seal\_hash}) computed over: (1) the genesis
+contract text in this appendix, (2) the manuscript line count, table count,
+and LaTeX environment balance, (3) the baseline results JSON, and (4)
+\texttt{AGENTS.md} (excluding \texttt{git\_head} and \texttt{sealed\_at} from
+the digest so committing \texttt{.genesis\_seal.json} does not self-invalidate
+the seal on \texttt{HEAD}). Any change to the manuscript,
 baselines, or genesis contract invalidates the seal. The seal is verified
 automatically in CI on every push and weekly via a scheduled DNS link check
 (\texttt{.github/workflows/link-check.yml}). To verify locally:
